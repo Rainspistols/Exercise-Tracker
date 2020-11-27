@@ -112,9 +112,7 @@ const getLogByUser = (req, res) => {
   const { userId, from, to, limit } = req.body;
 
   User.findById(userId, (err, userFounded) => {
-    return res.json({
-      userFounded,
-    });
+    return res.json(userFounded);
   });
 };
 
