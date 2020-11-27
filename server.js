@@ -109,7 +109,7 @@ const addExercise = (req, res) => {
 };
 
 const getLogByUser = (req, res) => {
-  const { userId, from, to, limit } = req.body;
+  const { userId, from, to, limit } = req.query;
 
   User.findById(userId, (err, userFounded) => {
     return res.json(userFounded);
