@@ -19,10 +19,6 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/build/index.html');
 });
 
-// Not found middleware
-// app.use((req, res, next) => {
-//   return next({ status: 404, message: 'not found' });
-// });
 // MongoDB Schema
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
@@ -58,11 +54,6 @@ app.use((err, req, res, next) => {
 });
 
 const postNewUser = (req, res) => {
-  // newShortUrl.save((err, newUrl) => {
-  //   if (err) return res.send(err);
-  //   return res.json({ original_url: newUrl.original_url, short_url: newUrl.short_url });
-  // });
-
   User.estimatedDocumentCount().exec((err, count) => {
     const newUser = new User({
       username: req.body.username,
