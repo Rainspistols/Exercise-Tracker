@@ -112,6 +112,23 @@ const getLogByUser = (req, res) => {
   const { userId, from, to, limit } = req.query;
 
   User.findById(userId, (err, userFounded) => {
+    if (limit) {
+      const limitedLog = userFounded.log.slice(0, limit);
+      userFounded.log = limitedLog;
+      userFounded.count = limitedLog.length;
+    }
+
+    if (from && to) {
+      const start = new Date(from).getTime();
+      const end = new Date(to).getTime();
+      const log = userFounded.log;
+      console.log(start, end);
+      log.filter((item) => {
+        const dateInTS = new Date(item.date).getTime();
+        return dateInTS > start && dateInTS < end;
+      });
+      userFounded.log = log;
+    }
     return res.json(userFounded);
   });
 };
