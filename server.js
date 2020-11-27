@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const { Schema } = mongoose;
 const PORT = process.env.PORT || '8080';
@@ -84,14 +85,15 @@ const getAllUsers = (req, res) => {
 const addExercise = (req, res) => {
   let { userId, description, duration, date } = req.body;
   if (!date) {
-    date = new Date();
+    date = moment().format('ddd MMM DD YYYY');
   }
 
   User.findById(userId, (err, updatedUser) => {
+    if (!updatedUser) return res.send('User not found');
     const changes = {
-      date: date,
+      date: moment(date).format('ddd MMM DD YYYY'),
       description: description,
-      duration: duration,
+      duration: +duration,
     };
     updatedUser.log.push(changes);
     updatedUser.count = updatedUser.log.length;
